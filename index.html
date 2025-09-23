@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Lizard Meme App</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            height: 100%;
+            overflow: hidden;
+            touch-action: manipulation;
+        }
+
+        #screen {
+            width: 100vw;
+            height: 100vh;
+            background-color: #ffffff;
+            cursor: pointer;
+            user-select: none;
+            -webkit-user-select: none;
+            -webkit-touch-callout: none;
+            -webkit-tap-highlight-color: transparent;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Hide audio element */
+        #audio {
+            display: none;
+        }
+
+        /* Tap screen message */
+        #hint {
+            color: #333333;
+            font-family: Arial, sans-serif;
+            font-size: 24px;
+            font-weight: bold;
+            position: absolute;
+            text-align: center;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body>
+    <div id="screen">
+        <div id="hint">TAP SCREEN</div>
+        <audio id="audio" preload="auto">
+            <source src="lizard_meme.mp3" type="audio/mpeg">
+            Your browser does not support the audio element.
+        </audio>
+    </div>
+
+    <script>
+        const screen = document.getElementById('screen');
+        const audio = document.getElementById('audio');
+        const hint = document.getElementById('hint');
+
+        // Function to play audio
+        function playAudio() {
+            try {
+                // Reset audio to beginning
+                audio.currentTime = 0;
+                // Play the audio
+                audio.play().catch(error => {
+                    console.log('Audio play failed:', error);
+                });
+                // No longer hiding hint - keeping it visible
+            } catch (error) {
+                console.log('Error playing audio:', error);
+            }
+        }
+
+        // Add touch event listeners for mobile
+        screen.addEventListener('touchstart', function(e) {
+            e.preventDefault(); // Prevent default touch behavior
+            playAudio();
+        }, { passive: false });
+
+        // Add click event listener for desktop/mouse
+        screen.addEventListener('click', function(e) {
+            e.preventDefault();
+            playAudio();
+        });
+
+        // Prevent context menu on long press
+        screen.addEventListener('contextmenu', function(e) {
+            e.preventDefault();
+        });
+
+        // Prevent scrolling and zooming
+        document.addEventListener('touchmove', function(e) {
+            e.preventDefault();
+        }, { passive: false });
+
+        // Handle audio loading
+        audio.addEventListener('loadeddata', function() {
+            console.log('Audio loaded successfully');
+        });
+
+        audio.addEventListener('error', function(e) {
+            console.log('Audio loading error:', e);
+        });
+    </script>
+</body>
+</html>
