@@ -33,7 +33,7 @@ function init() {
 
     // Load GLB model
     const loader = new THREE.GLTFLoader();
-    loader.load('../hoodie.glb', function(gltf) {
+    loader.load('hoodie.glb', function(gltf) {
         gltf.scene.traverse(function(child) {
             if (child.isMesh) {
                 if (child.material) {
