@@ -37,28 +37,53 @@ function init() {
         gltf.scene.traverse(function(child) {
             if (child.isMesh) {
                 if (child.material) {
-                    // Remove any alphaMap and set alphaTest to 0
-                    child.material.alphaMap = null;
-                    child.material.alphaTest = 0;
-                    child.material.transparent = false;
-                    child.material.opacity = 1.0;
-                    child.material.side = THREE.DoubleSide;
-                    child.material.depthWrite = true;
-                    child.material.depthTest = true;
-                    // Optionally, convert to MeshStandardMaterial if not already
-                    if (!(child.material instanceof THREE.MeshStandardMaterial)) {
-                        child.material = new THREE.MeshStandardMaterial({
-                            map: child.material.map || null,
-                            color: child.material.color || new THREE.Color(0xffffff),
-                            metalness: 0.5,
-                            roughness: 0.7,
-                            side: THREE.DoubleSide,
-                            depthWrite: true,
-                            depthTest: true,
-                            opacity: 1.0,
-                            transparent: false,
-                            alphaTest: 0
-                        });
+                    // Special handling for mesh named 'NEW' to respect PNG transparency
+                    if (child.name === 'NEW') {
+                        child.material.transparent = true;
+                        child.material.alphaTest = 0.1;
+                        child.material.opacity = 1.0;
+                        child.material.side = THREE.DoubleSide;
+                        child.material.depthWrite = true;
+                        child.material.depthTest = true;
+                        // If not MeshStandardMaterial, convert
+                        if (!(child.material instanceof THREE.MeshStandardMaterial)) {
+                            child.material = new THREE.MeshStandardMaterial({
+                                map: child.material.map || null,
+                                color: child.material.color || new THREE.Color(0xffffff),
+                                metalness: 0.5,
+                                roughness: 0.7,
+                                side: THREE.DoubleSide,
+                                depthWrite: true,
+                                depthTest: true,
+                                opacity: 1.0,
+                                transparent: true,
+                                alphaTest: 0.1
+                            });
+                        }
+                    } else {
+                        // Remove any alphaMap and set alphaTest to 0
+                        child.material.alphaMap = null;
+                        child.material.alphaTest = 0;
+                        child.material.transparent = false;
+                        child.material.opacity = 1.0;
+                        child.material.side = THREE.DoubleSide;
+                        child.material.depthWrite = true;
+                        child.material.depthTest = true;
+                        // Optionally, convert to MeshStandardMaterial if not already
+                        if (!(child.material instanceof THREE.MeshStandardMaterial)) {
+                            child.material = new THREE.MeshStandardMaterial({
+                                map: child.material.map || null,
+                                color: child.material.color || new THREE.Color(0xffffff),
+                                metalness: 0.5,
+                                roughness: 0.7,
+                                side: THREE.DoubleSide,
+                                depthWrite: true,
+                                depthTest: true,
+                                opacity: 1.0,
+                                transparent: false,
+                                alphaTest: 0
+                            });
+                        }
                     }
                 }
             }

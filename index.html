@@ -10,9 +10,31 @@
     <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
 </head>
 <body>
+    <button id="helpBtn" class="help-btn" aria-label="Show controls">?</button>
+    <div id="helpModal" class="help-modal" style="display:none;">
+        <div class="help-modal-content">
+            <span id="closeHelp" class="close-help">&times;</span>
+            <h2>Phone Camera Controls</h2>
+            <ul>
+                <li><b>Drag:</b> Rotate the model</li>
+                <li><b>Pinch:</b> Zoom in/out</li>
+                <li><b>Two-finger drag:</b> Pan the view</li>
+                <li><b>Double-tap:</b> Reset camera</li>
+            </ul>
+        </div>
+    </div>
     <section class="section single-section" id="singleSection">
         <canvas id="singleCanvas" class="bg-canvas"></canvas>
     </section>
     <script src="script.js"></script>
+    <script>
+    // Help modal logic
+    const helpBtn = document.getElementById('helpBtn');
+    const helpModal = document.getElementById('helpModal');
+    const closeHelp = document.getElementById('closeHelp');
+    helpBtn.onclick = () => helpModal.style.display = 'block';
+    closeHelp.onclick = () => helpModal.style.display = 'none';
+    window.onclick = (e) => { if (e.target === helpModal) helpModal.style.display = 'none'; };
+    </script>
 </body>
 </html>
